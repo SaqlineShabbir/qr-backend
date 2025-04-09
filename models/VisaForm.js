@@ -14,7 +14,9 @@ const VisaFormSchema = new mongoose.Schema({
     passportNumber: String,
     dateOfIssue: Date,
     dateOfExpiry: Date,
-    placeofIssue: String
+    placeofIssue: String,
+    passportCopy: { type: String },
+   
   },
   contactDetails: {
     presentAddress: String,
