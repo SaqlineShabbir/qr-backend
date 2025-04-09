@@ -8,7 +8,11 @@ const visaRoutes = require("./routes/visaRoutes");
 const app = express();
 
 // Middleware
-app.use(cors({ origin: "*" }));
+app.use(cors({
+  origin: '*',               // Allows requests from any origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allow specific methods
+  allowedHeaders: ['Content-Type', 'Authorization'],  // Allowed headers
+}));
 app.use(bodyParser.json());
 
 // Health check
