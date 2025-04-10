@@ -8,7 +8,8 @@ const VisaFormSchema = new mongoose.Schema({
     dateOfBirth: Date,
     nationality: String,
     maritalStatus: String,
-    gender: String
+    gender: String,
+    photo: { type: String },
   },
   passportDetails: {
     passportNumber: String,

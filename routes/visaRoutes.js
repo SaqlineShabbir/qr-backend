@@ -21,9 +21,17 @@ const upload = multer({
 });
 
 // Create Visa Formm
-router.post("/", async (req, res) => {
+router.post("/", upload.single('photo'), async (req, res) => {
+  
   try {
-    const visaForm = new VisaForm(req.body);
+    const formData = {
+      personalDetails: {
+        ...req.body,
+        ...(req.file && { photo: req.file.path }) // Include photo path if file exists
+      }
+    };
+
+    const visaForm = new VisaForm(formData);
     await visaForm.save();
     res.status(201).json(visaForm);
   } catch (err) {
@@ -63,6 +71,31 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+router.put("/:id/photo",upload.single('photo'), async (req, res) => {
+  try {
+    const updateData = {
+      personalDetails: {
+        ...req.body,
+        ...(req.file && { photo: req.file.path }) 
+      }
+    };
+
+   
+
+    const visaForm = await VisaForm.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    );
+    
+
+    if (!visaForm) return res.status(404).json({ error: "Visa form not found" });
+    res.json(visaForm);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 // Update passport details with file upload (Page 2)
 router.put("/:id/passport", upload.single('passportCopy'), async (req, res) => {
@@ -74,15 +107,14 @@ router.put("/:id/passport", upload.single('passportCopy'), async (req, res) => {
       }
     };
 
-    console.log("Update Data:", updateData);
-    console.log("File Info:", req.file);
+   
 
     const visaForm = await VisaForm.findByIdAndUpdate(
       req.params.id,
       updateData,
       { new: true }
     );
-    console.log("Updated Visa Form:", visaForm);
+    
 
     if (!visaForm) return res.status(404).json({ error: "Visa form not found" });
     res.json(visaForm);

@@ -14,7 +14,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'], 
 }));
 app.use(bodyParser.json());
-
+app.use('/uploads', express.static('uploads'));
 // Health check
 app.get("/ping", (req, res) => {
   res.send("pong 🏓");
