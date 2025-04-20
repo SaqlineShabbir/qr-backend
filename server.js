@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const visaRoutes = require("./routes/visaRoutes");
+const qeRoutes = require("./routes/qrRoute");
 
 const app = express();
 
@@ -27,6 +28,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Routes
 app.use("/api/visa", visaRoutes);
+app.use("/api/qr", qeRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
