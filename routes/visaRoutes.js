@@ -135,5 +135,29 @@ router.delete("/:id", async (req, res) => {
 });
 
 
+// delete individually 
+
+router.patch("/visa-form/:id/reset-section", async (req, res) => {
+  const { section } = req.body; 
+
+  console.log("Section to reset:", section);
+
+  if (!["personalDetails", "passportDetails", "contactDetails", "visaDetails"].includes(section)) {
+    return res.status(400).json({ error: "Invalid section name" });
+  }
+
+  try {
+    const updated = await VisaForm.findByIdAndUpdate(
+      req.params.id,
+      { $unset: { [section]: "" } }, 
+      { new: true }
+    );
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
+
 
 module.exports = router;
